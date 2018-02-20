@@ -3,11 +3,11 @@ import Pacman from '../Pacman'
 
 const PinkPhantom = Phantom(5, {x: 2,y: 0}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
     (self, {i,j}) => {
-        let targePoint = {x: Pacman.GLOBALS.pacmanEntity.x, y: Pacman.GLOBALS.pacmanEntity.y}
-        if(Pacman.GLOBALS.pacmanEntity.direction == Pacman.GLOBALS.UP) targePoint.y -= 4
-        else if(Pacman.GLOBALS.pacmanEntity.direction == Pacman.GLOBALS.RIGHT) targePoint.x += 4
-        else if(Pacman.GLOBALS.pacmanEntity.direction == Pacman.GLOBALS.DOWN) targePoint.y += 4
-        else if(Pacman.GLOBALS.pacmanEntity.direction == Pacman.GLOBALS.LEFT) targePoint.x -= 4
+        let targePoint = {x: Pacman.GLOBALS.PacmanEntity.x, y: Pacman.GLOBALS.PacmanEntity.y}
+        if(Pacman.GLOBALS.PacmanEntity.direction == Pacman.GLOBALS.UP) targePoint.y -= 4
+        else if(Pacman.GLOBALS.PacmanEntity.direction == Pacman.GLOBALS.RIGHT) targePoint.x += 4
+        else if(Pacman.GLOBALS.PacmanEntity.direction == Pacman.GLOBALS.DOWN) targePoint.y += 4
+        else if(Pacman.GLOBALS.PacmanEntity.direction == Pacman.GLOBALS.LEFT) targePoint.x -= 4
         self.calculateDirection(targePoint, {i,j})
     },
     self => {

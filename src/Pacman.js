@@ -1,6 +1,6 @@
 import { Game, Gear, Loader, SpriteBatch, Keyboard } from '../render'
 import ClassicMaze from './maze/ClassicMaze'
-import pacmanEntity from './entities/PacmanEntity'
+import PacmanEntity from './entities/PacmanEntity'
 import RedPhantom from './entities/RedPhantom'
 import PinkPhantom from './entities/PinkPhantom'
 import BluePhantom from './entities/BluePhantom'
@@ -13,13 +13,27 @@ const mainGear = new Gear({
         }
     },
     init(){
+        this.paused = false
+        this.pausedTime = 0
+        this.acumulateTime = 0
+
         this.tileset = this.tiles.split(1, 8)[0]
         Pacman.GLOBALS.tileset = this.tileset
         Pacman.GLOBALS.maze = ClassicMaze
         this.sb = new SpriteBatch(Pacman.context)
         this.gearStack.init()
+
+        this.pauseGame(5)
     },
     update(){
+        if(this.paused){
+            this.acumulateTime += Pacman.deltaTime
+            if(this.acumulateTime >= this.pausedTime){
+                this.paused = false
+                this.acumulateTime = 0
+            }
+            return
+        }
         this.gearStack.update()
     },
     render(){
@@ -29,8 +43,15 @@ const mainGear = new Gear({
         this.gearStack.render(this.sb)
         this.sb.end();
     },
+    methods: {
+        pauseGame(time){
+            this.paused = true
+            this.pausedTime = time
+            this.acumulateTime = 0
+        },
+    },
     gears: {
-        pacmanEntity,
+        PacmanEntity,
         RedPhantom,
         PinkPhantom,
         BluePhantom,
@@ -44,7 +65,7 @@ Pacman.GLOBALS = {
     RIGHT: 1,
     DOWN: 2,
     LEFT: 3,
-    pacmanEntity,
+    PacmanEntity,
 }
 
 export default Pacman

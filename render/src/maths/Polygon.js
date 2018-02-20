@@ -40,7 +40,7 @@ export default class Polygon{
     return normals
   }
 
-  proyection(vector){
+  projection(vector){
     let min = this.vertexs[0].projection(vector)
     let max = min
     for (let i = 1; i < this.vertexs.length; i++) {

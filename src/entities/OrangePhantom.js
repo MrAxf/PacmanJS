@@ -4,9 +4,9 @@ import { Vector2D } from '../../render'
 
 const OrangePhantom = Phantom(7, {x: 0,y: 34}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x + 2, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
     (self, {i,j}) => {
-        const distance = (new Vector2D(Math.floor(self.x), Math.floor(self.y), Math.floor(Pacman.GLOBALS.pacmanEntity.x), Math.floor(Pacman.GLOBALS.pacmanEntity.y))).magnitude()
+        const distance = (new Vector2D(Math.floor(self.x), Math.floor(self.y), Math.floor(Pacman.GLOBALS.PacmanEntity.x), Math.floor(Pacman.GLOBALS.PacmanEntity.y))).magnitude()
         if(distance < 8) self.calculateDirection(self.patrolPoint, {i,j})
-        else self.calculateDirection({x: Pacman.GLOBALS.pacmanEntity.x, y: Pacman.GLOBALS.pacmanEntity.y}, {i,j})
+        else self.calculateDirection({x: Pacman.GLOBALS.PacmanEntity.x, y: Pacman.GLOBALS.PacmanEntity.y}, {i,j})
     },
     self => {
         if((Pacman.GLOBALS.maze.balls_total - Pacman.GLOBALS.maze.balls_count) >= (Pacman.GLOBALS.maze.balls_total/3)){

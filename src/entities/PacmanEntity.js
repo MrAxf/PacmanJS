@@ -1,8 +1,12 @@
-import { Gear, Keyboard } from '../../render'
+import { Gear, Keyboard, Rectangle } from '../../render'
 import Pacman from '../Pacman'
 import Maze from '../maze/Maze'
+import RedPhantom from './RedPhantom';
+import PinkPhantom from './PinkPhantom';
+import BluePhantom from './BluePhantom';
+import OrangePhantom from './OrangePhantom';
 
-const pacmanEntity = new Gear({
+const PacmanEntity = new Gear({
     init(){
         this.frame = Pacman.GLOBALS.tileset[1]
 
@@ -17,11 +21,17 @@ const pacmanEntity = new Gear({
         this.nextDirection = Pacman.GLOBALS.LEFT
     },
     update(){
+        const prevX = this.x
+        const prevY = this.y
+
         if(Pacman.input.isKeyDown(Keyboard.KEYS.UP_ARROW)) this.nextDirection = Pacman.GLOBALS.UP
         else if(Pacman.input.isKeyDown(Keyboard.KEYS.DOWN_ARROW)) this.nextDirection = Pacman.GLOBALS.DOWN
         else if(Pacman.input.isKeyDown(Keyboard.KEYS.LEFT_ARROW)) this.nextDirection = Pacman.GLOBALS.LEFT
         else if(Pacman.input.isKeyDown(Keyboard.KEYS.RIGHT_ARROW)) this.nextDirection = Pacman.GLOBALS.RIGHT
+        
         this.updatePosition()
+        
+        this.checkEntityColision()
     },
     render(sb){
         sb.drawTexture(this.frame, this.xRounded*8, this.yRounded*8)
@@ -84,8 +94,21 @@ const pacmanEntity = new Gear({
         },
         getTile(){
             return {i:Math.floor(this.y - 3), j: Math.floor(this.x)}
+        },
+        collides(entity){
+            if(
+                (this.x + 1 >= entity.x && entity.x +1 >= this.x) &&
+                (this.y + 1 >= entity.y && entity.y +1 >= this.y)
+            ) return true
+            return false
+        },
+        checkEntityColision(){
+            if(this.collides(RedPhantom)) RedPhantom.onPacmanCollision()
+            if(this.collides(PinkPhantom)) PinkPhantom.onPacmanCollision()
+            if(this.collides(BluePhantom)) BluePhantom.onPacmanCollision()
+            if(this.collides(OrangePhantom)) OrangePhantom.onPacmanCollision()
         }
     }
 })
 
-export default pacmanEntity
+export default PacmanEntity

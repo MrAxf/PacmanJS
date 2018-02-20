@@ -4,6 +4,9 @@ import Maze from '../maze/Maze'
 
 const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new Gear({
     init(){
+        this.paused = false
+        this.pausedTime = 0
+
         this.mode = 'Patrol'
         this.prevMode = 'Patrol'
 
@@ -12,7 +15,8 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         this.timeRefernce = 0
         this.acumulateTime = 0
 
-        const spawn = spawnPoint()
+        this.spawnPoint = spawnPoint
+        const spawn = this.spawnPoint()
         this.inJail = true
         this.onInJail = onInJail
 
@@ -32,6 +36,15 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         this.onHuntModeCb = onHuntMode
     },
     update(){
+        if(this.paused){
+            this.acumulateTime += Pacman.deltaTime
+            if(this.acumulateTime >= this.pausedTime){
+                this.paused = false
+                this.acumulateTime = 0
+            }
+            return
+        }
+
         if(this.inJail){
             this.onInJail(this)
             if(!this.inJail){
@@ -43,6 +56,9 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
             }
             else return
         }
+
+        const prevX = this.x
+        const prevY = this.y
 
         let movement = this.v * Pacman.deltaTime
         if(movement > 0.1) movement = 0.1
@@ -169,9 +185,11 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         setMode(){
             if(this.mode == 'Panic'){
                 this.acumulateTime += Pacman.deltaTime
+                this.v = 1.5
                 if(this.acumulateTime >= Phantom.PANIC_TIME){
                     this.acumulateTime = 0
                     this.mode = this.prevMode
+                    this.v = 3.5
                 }
             }
             if(this.mode == 'Hunt' && Phantom.TIMES[this.timeRefernce] < 0) return
@@ -181,11 +199,42 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
                 this.timeRefernce++
                 this.mode = (this.mode == 'Patrol') ? 'Hunt' : 'Patrol'
             }
-        }
+        },
+        softReset(){
+            const spawn = this.spawnPoint()
+            this.x = spawn.x
+            this.y = spawn.y
+            this.xRounded = spawn.x
+            this.yRounded = spawn.y
+
+            this.direction = Pacman.GLOBALS.LEFT
+            this.nextDirection = Pacman.GLOBALS.LEFT
+            this.nextDirectionCalculated = false
+            this.inJail = true
+        },
+        onPacmanCollision(){
+            if(this.mode == 'Panic'){
+                this.acumulateTime = 0
+                this.mode = this.prevMode
+                this.v = 3.5
+
+                this.softReset()
+                this.pausePhantom(Phantom.AFTER_EAT_PAUSE)
+            }
+            else{
+
+            }
+        },
+        pausePhantom(time){
+            this.paused = true
+            this.pausedTime = time
+            this.acumulateTime = 0
+        },
     }
 })
 
 Phantom.TIMES = [7, 20, 7, 20, 5, 20, 5 ,-1]
 Phantom.PANIC_TIME = 10
+Phantom.AFTER_EAT_PAUSE = 3
 
 export default Phantom
