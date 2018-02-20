@@ -34,10 +34,12 @@ class Maze{
     }
 
     consumeBall(i,j){
+        const cell = this.layout[i][j]
         if(this.layout[i][j] >= 2){
             this.layout[i][j] = 1
             this.balls_count--
         }
+        return cell
     }
 
     render(sb){

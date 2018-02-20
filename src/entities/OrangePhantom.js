@@ -9,27 +9,29 @@ const OrangePhantom = Phantom(7, {x: 0,y: 34}, () => ({x: Pacman.GLOBALS.maze.ja
         else self.calculateDirection({x: Pacman.GLOBALS.pacmanEntity.x, y: Pacman.GLOBALS.pacmanEntity.y}, {i,j})
     },
     self => {
-        let movement = self.v * Pacman.deltaTime
-        if(movement > 0.1) movement = 0.1
+        if((Pacman.GLOBALS.maze.balls_total - Pacman.GLOBALS.maze.balls_count) >= (Pacman.GLOBALS.maze.balls_total/3)){
+            let movement = self.v * Pacman.deltaTime
+            if(movement > 0.1) movement = 0.1
 
-        if(self.x != Pacman.GLOBALS.maze.jailDoor.x){
-            self.x += movement
-            self.xRounded = Math.round(self.x * 10) / 10
+            if(self.x != Pacman.GLOBALS.maze.jailDoor.x){
+                self.x -= movement
+                self.xRounded = Math.round(self.x * 10) / 10
 
-            if(self.x > (Pacman.GLOBALS.maze.jailDoor.x - 0.1) && self.x < (Pacman.GLOBALS.maze.jailDoor.x + 0.1)) {
-                self.x = Pacman.GLOBALS.maze.jailDoor.x
-                self.xRounded = Pacman.GLOBALS.maze.jailDoor.x
+                if(self.x > (Pacman.GLOBALS.maze.jailDoor.x - 0.1) && self.x < (Pacman.GLOBALS.maze.jailDoor.x + 0.1)) {
+                    self.x = Pacman.GLOBALS.maze.jailDoor.x
+                    self.xRounded = Pacman.GLOBALS.maze.jailDoor.x
+                }
             }
-        }
-        else {
-            self.y -= movement
-            self.yRounded = Math.round(self.y * 10) / 10
+            else {
+                self.y -= movement
+                self.yRounded = Math.round(self.y * 10) / 10
 
-            if(Math.floor(self.y) == (Pacman.GLOBALS.maze.jailDoor.y - 1) && self.yRounded % 1 <= 0.2) {
-                self.y = Pacman.GLOBALS.maze.jailDoor.y - 1
-                self.yRounded = Pacman.GLOBALS.maze.jailDoor.y - 1
+                if(Math.floor(self.y) == (Pacman.GLOBALS.maze.jailDoor.y - 1) && self.yRounded % 1 <= 0.2) {
+                    self.y = Pacman.GLOBALS.maze.jailDoor.y - 1
+                    self.yRounded = Pacman.GLOBALS.maze.jailDoor.y - 1
 
-                self.inJail = false
+                    self.inJail = false
+                }
             }
         }
     }

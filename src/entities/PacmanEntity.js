@@ -49,7 +49,7 @@ const pacmanEntity = new Gear({
         changeDirection(){
             const {i,j} = this.getTile()
 
-            Pacman.GLOBALS.maze.consumeBall(i,j)
+            if(Pacman.GLOBALS.maze.consumeBall(i,j) == 3) this.$emit('enterPanic')
 
             if(this.direction == this.nextDirection) return
 

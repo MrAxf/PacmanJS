@@ -5,7 +5,12 @@ import Maze from '../maze/Maze'
 const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new Gear({
     init(){
         this.mode = 'Patrol'
+        this.prevMode = 'Patrol'
+
         this.sprite = sprite
+
+        this.timeRefernce = 0
+        this.acumulateTime = 0
 
         const spawn = spawnPoint()
         this.inJail = true
@@ -18,7 +23,7 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
 
         this.patrolPoint = patrolPoint
 
-        this.v = 5
+        this.v = 3.5
 
         this.direction = Pacman.GLOBALS.LEFT
         this.nextDirection = Pacman.GLOBALS.LEFT
@@ -29,7 +34,14 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
     update(){
         if(this.inJail){
             this.onInJail(this)
-            return
+            if(!this.inJail){
+                this.$subscribe('enterPanic', () => {
+                    this.prevMode = this.mode
+                    this.mode = 'Panic'
+                    this.acumulateTime = 0
+                })
+            }
+            else return
         }
 
         let movement = this.v * Pacman.deltaTime
@@ -46,6 +58,8 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         this.yRounded = Math.round(this.y * 10) / 10
 
         this.changeDirection()
+
+        this.setMode()
     },
     render(sb){
         sb.drawTexture(Pacman.GLOBALS.tileset[this.sprite], this.xRounded*8, this.yRounded*8)
@@ -110,19 +124,19 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
                 this[`on${this.mode}Mode`]({i,j})
             }
 
-            if(this.nextDirection == Pacman.GLOBALS.UP && Pacman.GLOBALS.maze.layout[i-1][j] > 0 && this.xRounded % 1 <= 0.2){
+            if(this.nextDirection == Pacman.GLOBALS.UP && Pacman.GLOBALS.maze.layout[i-1][j] > 0 && this.xRounded % 1 <= 0.1){
                 this.x = Math.floor(this.x)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.RIGHT && Pacman.GLOBALS.maze.layout[i][j+1] > 0 && this.yRounded % 1 <= 0.2){
+            else if(this.nextDirection == Pacman.GLOBALS.RIGHT && Pacman.GLOBALS.maze.layout[i][j+1] > 0 && this.yRounded % 1 <= 0.1){
                 this.y = Math.floor(this.y)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.DOWN && Pacman.GLOBALS.maze.layout[i+1][j] > 0 && this.xRounded % 1 <= 0.2){
+            else if(this.nextDirection == Pacman.GLOBALS.DOWN && Pacman.GLOBALS.maze.layout[i+1][j] > 0 && this.xRounded % 1 <= 0.1){
                 this.x = Math.floor(this.x)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.LEFT && Pacman.GLOBALS.maze.layout[i][j-1] > 0 && this.yRounded % 1 <= 0.2){
+            else if(this.nextDirection == Pacman.GLOBALS.LEFT && Pacman.GLOBALS.maze.layout[i][j-1] > 0 && this.yRounded % 1 <= 0.1){
                 this.y = Math.floor(this.y)
                 this.direction = this.nextDirection
             }
@@ -151,8 +165,27 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         },
         onHuntMode({i,j}){
             this.onHuntModeCb(this, {i,j})
+        },
+        setMode(){
+            if(this.mode == 'Panic'){
+                this.acumulateTime += Pacman.deltaTime
+                if(this.acumulateTime >= Phantom.PANIC_TIME){
+                    this.acumulateTime = 0
+                    this.mode = this.prevMode
+                }
+            }
+            if(this.mode == 'Hunt' && Phantom.TIMES[this.timeRefernce] < 0) return
+            this.acumulateTime += Pacman.deltaTime
+            if(this.acumulateTime >= Phantom.TIMES[this.timeRefernce]){
+                this.acumulateTime = 0
+                this.timeRefernce++
+                this.mode = (this.mode == 'Patrol') ? 'Hunt' : 'Patrol'
+            }
         }
     }
 })
+
+Phantom.TIMES = [7, 20, 7, 20, 5, 20, 5 ,-1]
+Phantom.PANIC_TIME = 10
 
 export default Phantom
