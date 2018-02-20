@@ -1,16 +1,20 @@
 import Pacman from '../Pacman'
 
 class Maze{
-    constructor(layout, intersections){
+    constructor(layout, intersections, pacmanSpawn, jailDoor){
         this.layout = layout
         this.intersections = new Map()
         this.balls_count = 0
+        this.pacmanSpawn = pacmanSpawn
+        this.jailDoor = jailDoor
 
         for (let i = 0; i < this.layout.length; i++) {
             for (let j = 0; j < this.layout[i].length; j++) {
                 if(this.layout[i][j] >= 2) this.balls_count++
             }
         }
+
+        this.balls_total = this.balls_count
 
         for (let i = 0; i < intersections.length; i++) {
             const point = intersections[i][0]
@@ -32,7 +36,7 @@ class Maze{
     consumeBall(i,j){
         if(this.layout[i][j] >= 2){
             this.layout[i][j] = 1
-            this.ball_count--
+            this.balls_count--
         }
     }
 

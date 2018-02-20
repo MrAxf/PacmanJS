@@ -1,15 +1,6 @@
 import Maze from "./Maze"
 
 const ClassicMaze = new Maze(
-    // 2 Wall
-    // 0 Empty
-    // 2 Ball
-    // 3 Super ball
-    // 5 
-    // 6 
-    // 7 
-    // 8 
-    // 9 Pacman spawn
     [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,2,2,2,2,2,2,2,2,2,2,2,2,0,0,2,2,2,2,2,2,2,2,2,2,2,2,0],
@@ -108,7 +99,9 @@ const ClassicMaze = new Maze(
         [[29,12], 'auto'],
         [[29,15], 'auto'],
         [[29,26], 'auto'],
-    ]
+    ],
+    {x: 13.5, y: 26},
+    {x: 13.5, y: 15}
 )
 
 export default ClassicMaze

@@ -6,10 +6,10 @@ const pacmanEntity = new Gear({
     init(){
         this.frame = Pacman.GLOBALS.tileset[1]
 
-        this.x = 13.5
-        this.y = 26
-        this.xRounded = 13.5
-        this.yRounded = 26
+        this.x = Pacman.GLOBALS.maze.pacmanSpawn.x
+        this.y = Pacman.GLOBALS.maze.pacmanSpawn.y
+        this.xRounded = Pacman.GLOBALS.maze.pacmanSpawn.x
+        this.yRounded = Pacman.GLOBALS.maze.pacmanSpawn.y
 
         this.v = 5
 
@@ -30,11 +30,14 @@ const pacmanEntity = new Gear({
         updatePosition(){
 
             if((this.direction + this.nextDirection)%2 == 0) this.direction = this.nextDirection
+            
+            let movement = this.v * Pacman.deltaTime
+            if(movement > 0.1) movement = 0.1
 
-            if(this.direction == Pacman.GLOBALS.UP) this.y -= this.v * Pacman.deltaTime
-            else if(this.direction == Pacman.GLOBALS.RIGHT) this.x += this.v * Pacman.deltaTime
-            else if(this.direction == Pacman.GLOBALS.DOWN) this.y += this.v * Pacman.deltaTime
-            else if(this.direction == Pacman.GLOBALS.LEFT) this.x -= this.v * Pacman.deltaTime
+            if(this.direction == Pacman.GLOBALS.UP) this.y -= movement
+            else if(this.direction == Pacman.GLOBALS.RIGHT) this.x += movement
+            else if(this.direction == Pacman.GLOBALS.DOWN) this.y += movement
+            else if(this.direction == Pacman.GLOBALS.LEFT) this.x -= movement
 
             this.fixPosition()
 
@@ -71,10 +74,10 @@ const pacmanEntity = new Gear({
         fixPosition(){
             const {i,j} = this.getTile()
 
-            if(this.direction == 0 && Pacman.GLOBALS.maze.layout[i][j] == Maze.BLOCKS.WALL) this.y = Math.ceil(this.y)
-            else if(this.direction == 1 && Pacman.GLOBALS.maze.layout[i][j+1] == Maze.BLOCKS.WALL) this.x = Math.floor(this.x)
-            else if(this.direction == 2 && Pacman.GLOBALS.maze.layout[i+1][j] == Maze.BLOCKS.WALL) this.y = Math.floor(this.y)
-            else if(this.direction == 3 && Pacman.GLOBALS.maze.layout[i][j] == Maze.BLOCKS.WALL) this.x = Math.ceil(this.x)
+            if(this.direction == Pacman.GLOBALS.UP && Pacman.GLOBALS.maze.layout[i][j] == Maze.BLOCKS.WALL) this.y = Math.ceil(this.y)
+            else if(this.direction == Pacman.GLOBALS.RIGHT && Pacman.GLOBALS.maze.layout[i][j+1] == Maze.BLOCKS.WALL) this.x = Math.floor(this.x)
+            else if(this.direction == Pacman.GLOBALS.DOWN && Pacman.GLOBALS.maze.layout[i+1][j] == Maze.BLOCKS.WALL) this.y = Math.floor(this.y)
+            else if(this.direction == Pacman.GLOBALS.LEFT && Pacman.GLOBALS.maze.layout[i][j] == Maze.BLOCKS.WALL) this.x = Math.ceil(this.x)
 
             if(this.x < -1) this.x = 28
             if(this.x > 28) this.x = -1
