@@ -83,7 +83,6 @@ Pacman.GLOBALS = {
     RIGHT: 1,
     DOWN: 2,
     LEFT: 3,
-    PacmanEntity,
     POINTS: 0,
 }
 

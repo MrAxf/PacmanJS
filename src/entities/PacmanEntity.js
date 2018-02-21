@@ -1,4 +1,4 @@
-import { Gear, Keyboard, Rectangle } from '../../render'
+import { Gear, Keyboard } from '../../render'
 import Pacman from '../Pacman'
 import Maze from '../maze/Maze'
 import RedPhantom from './RedPhantom';

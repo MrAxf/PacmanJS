@@ -140,19 +140,19 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
                 this[`on${this.mode}Mode`]({i,j})
             }
 
-            if(this.nextDirection == Pacman.GLOBALS.UP && Pacman.GLOBALS.maze.layout[i-1][j] > 0 && this.xRounded % 1 <= 0.1){
+            if(this.nextDirection == Pacman.GLOBALS.UP && Pacman.GLOBALS.maze.layout[i-1][j] > 0 && this.xRounded % 1 <= 0.2){
                 this.x = Math.floor(this.x)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.RIGHT && Pacman.GLOBALS.maze.layout[i][j+1] > 0 && this.yRounded % 1 <= 0.1){
+            else if(this.nextDirection == Pacman.GLOBALS.RIGHT && Pacman.GLOBALS.maze.layout[i][j+1] > 0 && this.yRounded % 1 <= 0.2){
                 this.y = Math.floor(this.y)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.DOWN && Pacman.GLOBALS.maze.layout[i+1][j] > 0 && this.xRounded % 1 <= 0.1){
+            else if(this.nextDirection == Pacman.GLOBALS.DOWN && Pacman.GLOBALS.maze.layout[i+1][j] > 0 && this.xRounded % 1 <= 0.2){
                 this.x = Math.floor(this.x)
                 this.direction = this.nextDirection
             }
-            else if(this.nextDirection == Pacman.GLOBALS.LEFT && Pacman.GLOBALS.maze.layout[i][j-1] > 0 && this.yRounded % 1 <= 0.1){
+            else if(this.nextDirection == Pacman.GLOBALS.LEFT && Pacman.GLOBALS.maze.layout[i][j-1] > 0 && this.yRounded % 1 <= 0.2){
                 this.y = Math.floor(this.y)
                 this.direction = this.nextDirection
             }
