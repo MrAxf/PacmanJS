@@ -17,6 +17,8 @@ const mainGear = new Gear({
         this.pausedTime = 0
         this.acumulateTime = 0
 
+        this.lives = 3
+
         this.tileset = this.tiles.split(1, 8)[0]
         Pacman.GLOBALS.tileset = this.tileset
         Pacman.GLOBALS.maze = ClassicMaze
@@ -24,6 +26,8 @@ const mainGear = new Gear({
         this.gearStack.init()
 
         this.pauseGame(5)
+
+        this.$subscribe('pacmanDead', () => this.onPacmanDead())
     },
     update(){
         if(this.paused){
@@ -41,6 +45,11 @@ const mainGear = new Gear({
         this.sb.begin()
         ClassicMaze.render(this.sb)
         this.gearStack.render(this.sb)
+        for (let i = 0; i < this.lives; i++) {
+            this.sb.drawTexture(this.tileset[1], 16 + (i * 16), 276)
+        }
+        this.sb.drawText("HIGH SCORE", "white", "8px Verdana", "center", 108, 8)
+        this.sb.drawText(Pacman.GLOBALS.POINTS, "white", "8px Verdana", "center", 108, 16)
         this.sb.end();
     },
     methods: {
@@ -48,6 +57,15 @@ const mainGear = new Gear({
             this.paused = true
             this.pausedTime = time
             this.acumulateTime = 0
+        },
+        onPacmanDead(){
+            PacmanEntity.softReset()
+            RedPhantom.softReset()
+            PinkPhantom.softReset()
+            BluePhantom.softReset()
+            OrangePhantom.softReset()
+            this.lives--
+            this.pauseGame(5)
         },
     },
     gears: {
@@ -66,6 +84,7 @@ Pacman.GLOBALS = {
     DOWN: 2,
     LEFT: 3,
     PacmanEntity,
+    POINTS: 0,
 }
 
 export default Pacman

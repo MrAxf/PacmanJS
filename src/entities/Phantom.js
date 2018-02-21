@@ -206,6 +206,7 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
             this.y = spawn.y
             this.xRounded = spawn.x
             this.yRounded = spawn.y
+            this.v = 3.5
 
             this.direction = Pacman.GLOBALS.LEFT
             this.nextDirection = Pacman.GLOBALS.LEFT
@@ -216,13 +217,14 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
             if(this.mode == 'Panic'){
                 this.acumulateTime = 0
                 this.mode = this.prevMode
-                this.v = 3.5
+
+                Pacman.GLOBALS.POINTS += 100
 
                 this.softReset()
                 this.pausePhantom(Phantom.AFTER_EAT_PAUSE)
             }
             else{
-
+                this.$emit('pacmanDead')
             }
         },
         pausePhantom(time){

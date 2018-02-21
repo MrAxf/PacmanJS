@@ -107,7 +107,16 @@ const PacmanEntity = new Gear({
             if(this.collides(PinkPhantom)) PinkPhantom.onPacmanCollision()
             if(this.collides(BluePhantom)) BluePhantom.onPacmanCollision()
             if(this.collides(OrangePhantom)) OrangePhantom.onPacmanCollision()
-        }
+        },
+        softReset(){
+            this.x = Pacman.GLOBALS.maze.pacmanSpawn.x
+            this.y = Pacman.GLOBALS.maze.pacmanSpawn.y
+            this.xRounded = Pacman.GLOBALS.maze.pacmanSpawn.x
+            this.yRounded = Pacman.GLOBALS.maze.pacmanSpawn.y
+
+            this.direction = Pacman.GLOBALS.LEFT
+            this.nextDirection = Pacman.GLOBALS.LEFT
+        },
     }
 })
 

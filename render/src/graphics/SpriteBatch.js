@@ -61,7 +61,21 @@ export default class SpriteBatch {
     this.buffer.context.drawImage(texture.image, srcX, srcY, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight)
 
     this.buffer.context.restore()
-	}
+  }
+  drawText(text, color, font, aling, srcX, srcY){
+    if(!this.drawing)
+      throw "This batch is not begin to draw"
+    this.buffer.context.save()
+
+    this.buffer.context.setTransform(...M3.toCanvas2dMatrix(this.projectionMatrix))
+
+    this.buffer.context.font = font;
+    this.buffer.context.fillStyle = color;
+    this.buffer.context.textAlign = aling;
+    this.buffer.context.fillText(text, srcX, srcY);
+
+    this.buffer.context.restore()
+  }
 	end(){
 		if(!this.drawing)
 			throw "This batch is not begin to draw"

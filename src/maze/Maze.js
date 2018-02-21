@@ -38,6 +38,8 @@ class Maze{
         if(this.layout[i][j] >= 2){
             this.layout[i][j] = 1
             this.balls_count--
+            Pacman.GLOBALS.POINTS += 50
+            if(cell == 3) Pacman.GLOBALS.POINTS += 50
         }
         return cell
     }
