@@ -9,7 +9,7 @@ import OrangePhantom from './entities/OrangePhantom'
 const mainGear = new Gear({
     load(){
         return {
-            tiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/tileset.png`),
+            mazeTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/${ClassicMaze.spriteSheet}.png`),
             pacmanTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/pacman.png`),
         }
     },
@@ -20,7 +20,7 @@ const mainGear = new Gear({
 
         this.lives = 3
 
-        this.tileset = this.tiles.split(1, 8)[0]
+        this.tileset = this.mazeTiles.split(5, 4)
         const pacmanTileset = this.pacmanTiles.split(5, 7)
         this.liveTile = pacmanTileset[3][1]
 
