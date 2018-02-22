@@ -10,6 +10,8 @@ export default class Texture {
 	split(rows = 1, cols = 1) {
 		const rowHeight = this.height/rows
 		const colWidth = this.width/cols
+		console.log(rowHeight)
+		console.log(colWidth)
 		let regions = new Array(rows)
 		for (let i = 0; i < rows; i++) {
 			regions[i] = new Array(cols)

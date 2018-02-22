@@ -17,7 +17,7 @@ class InputManager {
         this[key] = value
       }
       (managers[i].init.bind(this))()
-      newUpdateFunctions[i] = managers[i].update.bind(this);
+      newUpdateFunctions[i] = managers[i].update.bind(this)
     }
 
     this._updateFunctions = [...this._updateFunctions, ...newUpdateFunctions]

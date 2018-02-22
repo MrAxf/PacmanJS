@@ -1,14 +1,27 @@
-import { Gear, Keyboard } from '../../render'
+import { Gear, Keyboard, Loader, Animation } from '../../render'
 import Pacman from '../Pacman'
 import Maze from '../maze/Maze'
-import RedPhantom from './RedPhantom';
-import PinkPhantom from './PinkPhantom';
-import BluePhantom from './BluePhantom';
-import OrangePhantom from './OrangePhantom';
+import RedPhantom from './RedPhantom'
+import PinkPhantom from './PinkPhantom'
+import BluePhantom from './BluePhantom'
+import OrangePhantom from './OrangePhantom'
 
 const PacmanEntity = new Gear({
+    load(){
+        return {
+            pacmanTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/pacman.png`)
+        }
+    },
     init(){
-        this.frame = Pacman.GLOBALS.tileset[1]
+        const tiles = this.pacmanTiles.split(5, 7)
+        this.animations =[
+            new Animation(0.06, [tiles[0][0], tiles[0][1], tiles[0][2], tiles[0][3]], Animation.PLAY_MODES.LOOP),
+            new Animation(0.06, [tiles[1][0], tiles[1][1], tiles[1][2], tiles[1][3]], Animation.PLAY_MODES.LOOP),
+            new Animation(0.06, [tiles[2][0], tiles[2][1], tiles[2][2], tiles[2][3]], Animation.PLAY_MODES.LOOP),
+            new Animation(0.06, [tiles[3][0], tiles[3][1], tiles[3][2], tiles[3][3]], Animation.PLAY_MODES.LOOP),
+            new Animation(0.06, tiles[4], Animation.PLAY_MODES.NORMAL)
+        ]
+        //this.frame = Pacman.GLOBALS.tileset[1]
 
         this.x = Pacman.GLOBALS.maze.pacmanSpawn.x
         this.y = Pacman.GLOBALS.maze.pacmanSpawn.y
@@ -34,7 +47,8 @@ const PacmanEntity = new Gear({
         this.checkEntityColision()
     },
     render(sb){
-        sb.drawTexture(this.frame, this.xRounded*8, this.yRounded*8)
+        sb.drawTexture(this.animations[this.direction].getFrame(Pacman.deltaTime), 0, 0, 16, 16, this.xRounded*8, this.yRounded*8, 16, 16, 0, 0.25, 0.25)
+        //sb.drawTexture(this.frame, this.xRounded*8, this.yRounded*8)
     },
     methods:{
         updatePosition(){

@@ -69,10 +69,10 @@ export default class SpriteBatch {
 
     this.buffer.context.setTransform(...M3.toCanvas2dMatrix(this.projectionMatrix))
 
-    this.buffer.context.font = font;
-    this.buffer.context.fillStyle = color;
-    this.buffer.context.textAlign = aling;
-    this.buffer.context.fillText(text, srcX, srcY);
+    this.buffer.context.font = font
+    this.buffer.context.fillStyle = color
+    this.buffer.context.textAlign = aling
+    this.buffer.context.fillText(text, srcX, srcY)
 
     this.buffer.context.restore()
   }
