@@ -2,7 +2,7 @@ import Phantom from './Phantom'
 import Pacman from '../Pacman'
 import PacmanEntity from './PacmanEntity'
 
-const PinkPhantom = Phantom(5, {x: 2,y: 0}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
+const PinkPhantom = Phantom("pink", {x: 2,y: 0}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
     (self, {i,j}) => {
         let targePoint = {x: PacmanEntity.x, y: PacmanEntity.y}
         if(PacmanEntity.direction == Pacman.GLOBALS.UP) targePoint.y -= 4

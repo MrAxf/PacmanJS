@@ -3,7 +3,7 @@ import Pacman from '../Pacman'
 import { Vector2D } from '../../render'
 import PacmanEntity from './PacmanEntity'
 
-const OrangePhantom = Phantom(7, {x: 0,y: 34}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x + 2, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
+const OrangePhantom = Phantom("orange", {x: 0,y: 34}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x + 2, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
     (self, {i,j}) => {
         const distance = (new Vector2D(Math.floor(self.x), Math.floor(self.y), Math.floor(PacmanEntity.x), Math.floor(PacmanEntity.y))).magnitude()
         if(distance < 8) self.calculateDirection(self.patrolPoint, {i,j})

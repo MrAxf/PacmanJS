@@ -9,7 +9,8 @@ import OrangePhantom from './entities/OrangePhantom'
 const mainGear = new Gear({
     load(){
         return {
-            tiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/tileset.png`)
+            tiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/tileset.png`),
+            pacmanTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/pacman.png`),
         }
     },
     init(){
@@ -20,6 +21,9 @@ const mainGear = new Gear({
         this.lives = 3
 
         this.tileset = this.tiles.split(1, 8)[0]
+        const pacmanTileset = this.pacmanTiles.split(5, 7)
+        this.liveTile = pacmanTileset[3][1]
+
         Pacman.GLOBALS.tileset = this.tileset
         Pacman.GLOBALS.maze = ClassicMaze
         this.sb = new SpriteBatch(Pacman.context)
@@ -46,7 +50,7 @@ const mainGear = new Gear({
         ClassicMaze.render(this.sb)
         this.gearStack.render(this.sb)
         for (let i = 0; i < this.lives; i++) {
-            this.sb.drawTexture(this.tileset[1], 16 + (i * 16), 276)
+            this.sb.drawTexture(this.liveTile, 16 + (i * 16), 272)
         }
         this.sb.drawText("HIGH SCORE", "white", "8px Verdana", "center", 108, 8)
         this.sb.drawText(Pacman.GLOBALS.POINTS, "white", "8px Verdana", "center", 108, 16)

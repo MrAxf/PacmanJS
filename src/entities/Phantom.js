@@ -1,8 +1,14 @@
-import { Gear, Vector2D, SpriteBatch } from '../../render'
+import { Gear, Vector2D, SpriteBatch, Loader, Animation } from '../../render'
 import Pacman from '../Pacman'
 import Maze from '../maze/Maze'
 
 const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new Gear({
+    load(){
+        return {
+            ghostTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/${sprite}Ghost.png`),
+            panicTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/panicGhost.png`),
+        }
+    },
     init(){
         this.paused = false
         this.pausedTime = 0
@@ -10,7 +16,16 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         this.mode = 'Patrol'
         this.prevMode = 'Patrol'
 
-        this.sprite = sprite
+        const ghostTileset = this.ghostTiles.split(4, 2)
+        const panicTileset = this.panicTiles.split(2, 2)
+        this.animations =[
+            new Animation(0.12, ghostTileset[0], Animation.PLAY_MODES.LOOP),
+            new Animation(0.12, ghostTileset[1], Animation.PLAY_MODES.LOOP),
+            new Animation(0.12, ghostTileset[2], Animation.PLAY_MODES.LOOP),
+            new Animation(0.12, ghostTileset[3], Animation.PLAY_MODES.LOOP),
+            new Animation(0.12, panicTileset[0], Animation.PLAY_MODES.LOOP),
+            new Animation(0.12, panicTileset[1], Animation.PLAY_MODES.LOOP)
+        ]
 
         this.timeRefernce = 0
         this.acumulateTime = 0
@@ -78,7 +93,12 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
         this.setMode()
     },
     render(sb){
-        sb.drawTexture(Pacman.GLOBALS.tileset[this.sprite], this.xRounded*8, this.yRounded*8)
+        if(this.mode == 'Panic'){
+            const animation = (this.acumulateTime >= 12) ? 5 : 4
+            sb.drawTexture(this.animations[animation].getFrame(Pacman.deltaTime), 0, 0, 16, 16, this.xRounded*8, this.yRounded*8, 16, 16, 0, 0.25, 0.25)
+        }
+        else sb.drawTexture(this.animations[this.direction].getFrame(Pacman.deltaTime), 0, 0, 16, 16, this.xRounded*8, this.yRounded*8, 16, 16, 0, 0.25, 0.25)
+        //sb.drawTexture(Pacman.GLOBALS.tileset[this.sprite], this.xRounded*8, this.yRounded*8)
     },
     methods:{
         calculateDirection(targetPoint, {i,j}){
@@ -236,7 +256,7 @@ const Phantom = (sprite, patrolPoint, spawnPoint, onHuntMode, onInJail) => new G
 })
 
 Phantom.TIMES = [7, 20, 7, 20, 5, 20, 5 ,-1]
-Phantom.PANIC_TIME = 10
+Phantom.PANIC_TIME = 15
 Phantom.AFTER_EAT_PAUSE = 3
 
 export default Phantom

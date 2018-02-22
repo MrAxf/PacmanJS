@@ -4,7 +4,7 @@ import RedPhantom from './RedPhantom'
 import { Vector2D } from '../../render'
 import PacmanEntity from './PacmanEntity'
 
-const BluePhantom = Phantom(6, {x: 27,y: 34}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x - 2, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
+const BluePhantom = Phantom("blue", {x: 27,y: 34}, () => ({x: Pacman.GLOBALS.maze.jailDoor.x - 2, y: Pacman.GLOBALS.maze.jailDoor.y + 2}), 
     (self, {i,j}) => {
         const pacmanPosition = {x: Math.floor(PacmanEntity.x), y: Math.floor(PacmanEntity.y)}
         let vector
