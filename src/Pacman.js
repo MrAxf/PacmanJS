@@ -1,15 +1,17 @@
 import { Game, Gear, Loader, SpriteBatch, Keyboard } from '../render'
-import ClassicMaze from './maze/ClassicMaze'
 import PacmanEntity from './entities/PacmanEntity'
 import RedPhantom from './entities/RedPhantom'
 import PinkPhantom from './entities/PinkPhantom'
 import BluePhantom from './entities/BluePhantom'
 import OrangePhantom from './entities/OrangePhantom'
+import GetMaze from './maze/MazeSelector'
+
+const PlayMaze = GetMaze()
 
 const mainGear = new Gear({
     load(){
         return {
-            mazeTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/${ClassicMaze.spriteSheet}.png`),
+            mazeTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/${PlayMaze.spriteSheet}.png`),
             pacmanTiles: Loader.loadTextureFromUrl(`${window.location.origin}/assets/pacman.png`),
         }
     },
@@ -25,7 +27,7 @@ const mainGear = new Gear({
         this.liveTile = pacmanTileset[3][1]
 
         Pacman.GLOBALS.tileset = this.tileset
-        Pacman.GLOBALS.maze = ClassicMaze
+        Pacman.GLOBALS.maze = PlayMaze
         this.sb = new SpriteBatch(Pacman.context)
         this.gearStack.init()
 
@@ -47,7 +49,7 @@ const mainGear = new Gear({
     render(){
         Pacman.context.fillRect(0,0,224,288)
         this.sb.begin()
-        ClassicMaze.render(this.sb)
+        PlayMaze.render(this.sb)
         this.gearStack.render(this.sb)
         for (let i = 0; i < this.lives; i++) {
             this.sb.drawTexture(this.liveTile, 16 + (i * 16), 272)
